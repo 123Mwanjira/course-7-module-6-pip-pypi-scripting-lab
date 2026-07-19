@@ -1,5 +1,7 @@
 from datetime import datetime
 
+import requests
+
 
 def generate_log(data):
     """Generate a timestamped log file from a list of entries."""
@@ -23,6 +25,19 @@ def generate_log(data):
     return filename
 
 
+def fetch_data():
+    """Fetch a post from the JSONPlaceholder public API."""
+
+    response = requests.get(
+        "https://jsonplaceholder.typicode.com/posts/1"
+    )
+
+    if response.status_code == 200:
+        return response.json()
+
+    return {}
+
+
 if __name__ == "__main__":
     log_data = [
         "User logged in",
@@ -31,3 +46,6 @@ if __name__ == "__main__":
     ]
 
     generate_log(log_data)
+
+    post = fetch_data()
+    print("Fetched Post Title:", post.get("title", "No title found"))
